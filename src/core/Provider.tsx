@@ -1,5 +1,5 @@
 import { FC, useReducer } from "react";
-import { useStore } from "./utils";
+// import { useStore } from "./utils";
 
 export interface Action {
   payload: any;
@@ -11,6 +11,6 @@ export interface SMProviderProps {
   store: { state: any; reducer: (state: any, action: Action) => any };
 }
 export const SMProvider: FC<SMProviderProps> = ({ store, children }) => {
-  const { state, dispatch } = useStore(store.state, store.reducer);
+  // const { state, dispatch } = useStore(store.state, store.reducer);
   return <>{children}</>;
 };

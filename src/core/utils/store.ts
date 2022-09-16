@@ -27,7 +27,7 @@ export const createStore = (init: any) => {
   };
   return useStore;
 };
-export const useStore = (state: any, reduce: any) =>
+export const configureStore = (state: any, reduce: any) =>
   createStore((get: any, set: any) => ({
     state,
     dispatch: (action: any) =>
@@ -35,4 +35,13 @@ export const useStore = (state: any, reduce: any) =>
         state: reduce(store.state, action),
         dispatch: store.dispatch,
       })),
-  }))();
+  }));
+// export const useStore = (state: any, reduce: any) =>
+//   createStore((get: any, set: any) => ({
+//     state,
+//     dispatch: (action: any) =>
+//       set((store: any) => ({
+//         state: reduce(store.state, action),
+//         dispatch: store.dispatch,
+//       })),
+//   }))();

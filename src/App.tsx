@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { useStore } from "./core";
+import { configureStore } from "./core";
 
 const initial = 0;
 
@@ -15,15 +15,18 @@ const reduce = (state: number, action: any) => {
       return state;
   }
 };
+const useStore = configureStore(initial, reduce);
 function App() {
-  const { state, dispatch } = useStore(initial, reduce);
+  const { state, dispatch } = useStore();
 
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         {state}
-        <button onClick={() => ({ type: "increment" })}>increment</button>
+        <button onClick={() => dispatch({ type: "increment" })}>
+          increment
+        </button>
         <button onClick={() => dispatch({ type: "decrement" })}>
           decrement
         </button>
