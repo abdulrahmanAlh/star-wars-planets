@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { createEmitter } from "./emitter";
 import produce from "immer";
 
+let store: any = null;
+
 export const createStore = (init: any) => {
   // create an emitter
   const emitter = createEmitter();
 
-  let store: any = null;
   const get = () => store;
   const set = (op: any) => (
     (store = op(store)),
@@ -32,7 +33,7 @@ export const createStore = (init: any) => {
 
     return filter ? filter(state) : state;
   };
-  return { useSelector, useStore };
+  return { useSelector, useStore, dispatch: store.dispatch };
 };
 
 export const configureStore = (state: any) =>
@@ -88,7 +89,7 @@ export interface GropuAttributes<Type> {
 export interface Group<Type = any> {
   actions: Record<
     string,
-    (payload: any) => {
+    (payload?: any) => {
       payloadAction: any;
       action: (state: Type, action: PayloadAction) => void;
       groupName: string;
@@ -125,6 +126,7 @@ export function combindGroups(attributes: CombindGroupsAttriburs) {
   });
   return state;
 }
+
 // export const useStore = (state: any, reduce: any) =>
 //   createStore((get: any, set: any) => ({
 //     state,
