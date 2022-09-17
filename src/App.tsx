@@ -5,9 +5,9 @@ import {
   combindGroups,
   configureStore,
   createGroup,
-  PayloadAction,
-} from "./core";
+} from "./core/stateManagment";
 import axios from "axios";
+import { PayloadAction } from "./core/stateManagment/types";
 
 interface gender {
   game: number;
