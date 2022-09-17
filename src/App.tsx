@@ -1,92 +1,85 @@
-import React, { useEffect } from "react";
-import logo from "./logo.svg";
+import { useEffect } from "react";
 import "./App.css";
-import {
-  combindGroups,
-  configureStore,
-  createGroup,
-} from "./core/stateManagment";
-import axios from "axios";
-import { PayloadAction } from "./core/stateManagment/types";
+import { FetchPlanets, Planet } from "./core/groups/planet";
+import { useSelector, useStore } from "./core/store";
 
-interface gender {
-  game: number;
-  gender: string;
-}
+// interface gender {
+//   game: number;
+//   gender: string;
+// }
 
-const initial: gender = {
-  game: 1,
-  gender: "man",
-};
-const genderGroup = createGroup<gender>({
-  initialState: initial,
-  name: "details",
-  reducers: {
-    setGender: (state, { payload }: PayloadAction<string>) => {
-      state.gender = state.gender === "women" ? "man" : "women";
-    },
-  },
-});
+// const initial: gender = {
+//   game: 1,
+//   gender: "man",
+// };
+// const genderGroup = createGroup<gender>({
+//   initialState: initial,
+//   name: "details",
+//   reducers: {
+//     setGender: (state, { payload }: PayloadAction<string>) => {
+//       state.gender = state.gender === "women" ? "man" : "women";
+//     },
+//   },
+// });
 
-interface product {
-  name: string;
-  price: number;
-  isLoading: boolean;
-}
+// interface product {
+//   name: string;
+//   price: number;
+//   isLoading: boolean;
+// }
 
-const initialProduct: product = {
-  price: 10,
-  name: "t-shirt",
-  isLoading: false,
-};
-const productGroup = createGroup<product>({
-  initialState: initialProduct,
-  name: "products",
-  reducers: {
-    setProduct: (state, { payload }: PayloadAction<string>) => {
-      state.name = payload;
-      state.price = 20;
-    },
-    setIsloading: (state) => {
-      console.log(!state.isLoading);
+// const initialProduct: product = {
+//   price: 10,
+//   name: "t-shirt",
+//   isLoading: false,
+// };
+// const productGroup = createGroup<product>({
+//   initialState: initialProduct,
+//   name: "products",
+//   reducers: {
+//     setProduct: (state, { payload }: PayloadAction<string>) => {
+//       state.name = payload;
+//       state.price = 20;
+//     },
+//     setIsloading: (state) => {
+//       console.log(!state.isLoading);
 
-      state.isLoading = !state.isLoading;
-    },
-  },
-});
+//       state.isLoading = !state.isLoading;
+//     },
+//   },
+// });
 
-const groups = combindGroups({
-  reducers: {
-    genderReducer: genderGroup,
-    productReducer: productGroup,
-  },
-});
+// const groups = combindGroups({
+//   reducers: {
+//     genderReducer: genderGroup,
+//     productReducer: productGroup,
+//   },
+// });
 
-export const { useStore, useSelector, dispatch } = configureStore(groups);
+// export const { useStore, useSelector, dispatch } = configureStore(groups);
 
-const getFromApi = async () => {
-  dispatch(productGroup.actions.setIsloading());
-  try {
-    await axios.get("https://swapi.dev/api/planets/");
-    dispatch(productGroup.actions.setIsloading());
-  } catch (error) {}
-};
+// const getFromApi = async () => {
+//   dispatch(productGroup.actions.setIsloading());
+//   try {
+//     await axios.get("https://swapi.dev/api/planets/");
+//     dispatch(productGroup.actions.setIsloading());
+//   } catch (error) {}
+// };
 
 function App() {
-  const { dispatch } = useStore();
-
-  const { gender } = useSelector((state) => state.details);
-  const { name, price, isLoading } = useSelector((state) => state.products);
+  const { isLoading, planets } = useSelector((state) => state.planet);
 
   useEffect(() => {
-    getFromApi();
+    FetchPlanets();
   }, []);
 
   return (
     <div>
-      {isLoading ? "loading" : "done"} <br />
-      {gender + " "}
-      {/* {state.game} */}
+      <h2 className="text-3xl text-center">Star War</h2>
+      {isLoading
+        ? "loading"
+        : planets.map((plant: Planet) => <p>{plant.name}</p>)}{" "}
+      {/* {gender + " "}
       <button onClick={() => dispatch(genderGroup.actions.setGender("woman"))}>
         change
       </button>
@@ -95,7 +88,7 @@ function App() {
         onClick={() => dispatch(productGroup.actions.setProduct("Laptop"))}
       >
         change product
-      </button>
+      </button> */}
     </div>
   );
 }

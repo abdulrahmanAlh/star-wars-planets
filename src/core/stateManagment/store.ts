@@ -10,7 +10,7 @@ import {
   Store,
 } from "./types";
 
-let store: Store;
+export let store: Store;
 
 export const createStore = (init: Function) => {
   // create an emitter
@@ -23,7 +23,6 @@ export const createStore = (init: Function) => {
     emitter.emit(store)
   );
   store = init(set);
-
   const useStore = () => {
     // intitialize component with latest store
     const [store, setStore] = useState(get());
