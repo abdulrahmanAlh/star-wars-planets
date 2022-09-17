@@ -1,56 +1,80 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { configureStore } from "./core";
+import {
+  combindGroups,
+  configureStore,
+  createGroup,
+  PayloadAction,
+} from "./core";
 
-const initial = {
+interface gender {
+  game: number;
+  gender: string;
+}
+
+const initial: gender = {
   game: 1,
   gender: "man",
 };
+const genderGroup = createGroup<gender>({
+  initialState: initial,
+  name: "details",
+  reducers: {
+    setGender: (state, { payload }: PayloadAction<string>) => {
+      state.gender = state.gender === "women" ? "man" : "women";
+    },
+  },
+});
 
-const reduce = (state: any, action: any) => {
-  switch (action.type) {
-    case "increment":
-      state.gender = "women";
-      break;
-    case "decrement":
-      state.game = action.payload;
-      break;
+interface product {
+  name: string;
+  price: number;
+}
 
-    default:
-      return state;
-  }
-  return state;
+const initialProduct: product = {
+  price: 10,
+  name: "t-shirt",
 };
-const { useStore, useSelector } = configureStore(initial, reduce);
+const productGroup = createGroup<product>({
+  initialState: initialProduct,
+  name: "products",
+  reducers: {
+    setProduct: (state, { payload }: PayloadAction<string>) => {
+      state.name = payload;
+      state.price = 20;
+    },
+  },
+});
+
+const groups = combindGroups({
+  reducers: {
+    genderReducer: genderGroup,
+    productReducer: productGroup,
+  },
+});
+
+const { useStore, useSelector } = configureStore(groups);
+
 function App() {
-  const { state, dispatch } = useStore();
+  const { dispatch } = useStore();
+
+  const { gender } = useSelector((state) => state.details);
+  const { name, price } = useSelector((state) => state.products);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        {state.gender + " "}
-        {state.game}
-
-        <button onClick={() => dispatch({ type: "increment" })}>
-          increment
-        </button>
-        <button onClick={() => dispatch({ type: "decrement", payload: 2 })}>
-          decrement
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {gender + " "}
+      {/* {state.game} */}
+      <button onClick={() => dispatch(genderGroup.actions.setGender("woman"))}>
+        change
+      </button>
+      {name} {price}
+      <button
+        onClick={() => dispatch(productGroup.actions.setProduct("Laptop"))}
+      >
+        change product
+      </button>
     </div>
   );
 }
