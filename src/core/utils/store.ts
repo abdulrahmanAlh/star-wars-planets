@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { createEmitter } from "./emitter";
+import produce from "immer";
 
 export const createStore = (init: any) => {
   // create an emitter
@@ -25,14 +26,20 @@ export const createStore = (init: any) => {
     }, []);
     return store;
   };
-  return useStore;
+
+  const useSelector = (filter?: (state: any) => any) => {
+    const { state } = useStore();
+
+    return filter ? filter(state) : state;
+  };
+  return { useSelector, useStore };
 };
 export const configureStore = (state: any, reduce: any) =>
   createStore((get: any, set: any) => ({
     state,
-    dispatch: (action: any) =>
+    dispatch: async (action: any) =>
       set((store: any) => ({
-        state: reduce(store.state, action),
+        state: produce(reduce)(store.state, action),
         dispatch: store.dispatch,
       })),
   }));

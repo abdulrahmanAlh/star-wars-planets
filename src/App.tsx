@@ -3,19 +3,26 @@ import logo from "./logo.svg";
 import "./App.css";
 import { configureStore } from "./core";
 
-const initial = 0;
+const initial = {
+  game: 1,
+  gender: "man",
+};
 
-const reduce = (state: number, action: any) => {
+const reduce = (state: any, action: any) => {
   switch (action.type) {
     case "increment":
-      return state + 1;
+      state.gender = "women";
+      break;
     case "decrement":
-      return state - 1;
+      state.game = action.payload;
+      break;
+
     default:
       return state;
   }
+  return state;
 };
-const useStore = configureStore(initial, reduce);
+const { useStore, useSelector } = configureStore(initial, reduce);
 function App() {
   const { state, dispatch } = useStore();
 
@@ -23,11 +30,13 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        {state}
+        {state.gender + " "}
+        {state.game}
+
         <button onClick={() => dispatch({ type: "increment" })}>
           increment
         </button>
-        <button onClick={() => dispatch({ type: "decrement" })}>
+        <button onClick={() => dispatch({ type: "decrement", payload: 2 })}>
           decrement
         </button>
         <p>
