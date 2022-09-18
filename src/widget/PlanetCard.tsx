@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { FC } from "react";
 import { CustomAvatar, CustomCard, CustomText } from "../components";
 import moment from "moment";
 import { nFormatter } from "../utils";

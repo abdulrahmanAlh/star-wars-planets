@@ -75,15 +75,22 @@ export const FetchPlanets = async (page = 1) => {
     planets = planets.filter((planet) => planet.haveReptiles);
 
     //Get films titles for each planet
-    // for (let index = 0; index < planets.length; index++) {
-    //   const plant = planets[index];
-    //   plant.films.forEach((film) => {
-    //     operations.push(axios.get(film));
-    //   });
-    //   let values = await Promise.all(operations);
-    //   planets[index] = { ...plant, films: values.map((val) => val.data.title) };
-    //   operations = [];
-    // }
+
+    // It's return names but it make response very slow
+    let films: any = {};
+    for (let index = 0; index < planets.length; index++) {
+      const plant = planets[index];
+      plant.films.forEach((film) => {
+        if (!films[film]) {
+          films.push(film);
+          operations.push(axios.get(film));
+        }
+      });
+      let values = await Promise.all(operations);
+      planets[index] = { ...plant, films: values.map((val) => val.data.title) };
+      operations = [];
+    }
+
     dispatch(setMeta({ ...rest }));
     dispatch(setPlanets(planets));
   } catch (error) {
