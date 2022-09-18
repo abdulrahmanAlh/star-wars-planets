@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import "./App.css";
+import { CustomCard, CustomText } from "./components";
 import { FetchPlanets, Planet } from "./core/groups/planet";
 import { useSelector, useStore } from "./core/store";
 
@@ -74,11 +75,17 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="container mx-auto">
       <h2 className="text-3xl text-center">Star War</h2>
-      {isLoading
-        ? "loading"
-        : planets.map((plant: Planet) => <p>{plant.name}</p>)}{" "}
+      <div className="grid gap-3 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
+        {isLoading
+          ? "loading"
+          : planets.map((plant: Planet) => (
+              <CustomCard>
+                <CustomText variant="primary">{plant.name}</CustomText>
+              </CustomCard>
+            ))}
+      </div>
       {/* {gender + " "}
       <button onClick={() => dispatch(genderGroup.actions.setGender("woman"))}>
         change
