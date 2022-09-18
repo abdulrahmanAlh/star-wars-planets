@@ -30,7 +30,6 @@ export const CustomPaginator: FC<CustomPaginatorProps> = ({
     <div className={`flex space-x-1 justify-center my-4 ${className}`}>
       <a
         className={classNames}
-        href="#"
         onClick={() => handleClickPagnitorItem(current - 1)}
       >
         &laquo;
@@ -46,7 +45,6 @@ export const CustomPaginator: FC<CustomPaginatorProps> = ({
 
       <a
         className={classNames}
-        href="#"
         onClick={() => handleClickPagnitorItem(current + 1)}
       >
         &raquo;

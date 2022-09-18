@@ -76,7 +76,7 @@ export const FetchPlanets = async (page = 1) => {
 
     //Get films titles for each planet
 
-    // It's return names but it make response very slow
+    // It's return names but it makes response very slow
 
     for (let index = 0; index < planets.length; index++) {
       const plant = planets[index];

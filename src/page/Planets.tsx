@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { CustomPaginator, Loader } from "../components";
+import { CustomPaginator, CustomText, Loader } from "../components";
 import { FetchPlanets } from "../core/groups/planet";
 import { Planet } from "../core/models";
 import { useSelector } from "../core/store";
@@ -20,9 +20,13 @@ function PlanetPage() {
     <div>
       <Loader loading={isLoading}>
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-3 ">
-          {planets.map((planet: Planet) => (
-            <PlanetCard key={planet.url} planet={planet} />
-          ))}
+          {planets.length > 0 ? (
+            planets.map((planet: Planet) => (
+              <PlanetCard key={planet.url} planet={planet} />
+            ))
+          ) : (
+            <CustomText>No Plants have films</CustomText>
+          )}
         </div>
       </Loader>
       <CustomPaginator
