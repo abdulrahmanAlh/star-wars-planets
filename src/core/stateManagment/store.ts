@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createEmitter } from "./utils/emitter";
 import produce from "immer";
 import {
+  CombindGroupsAttriburs,
   DispatchParams,
   GetFunction,
   GropuAttributes,
@@ -9,6 +10,8 @@ import {
   SetFunction,
   Store,
 } from "./types";
+
+//This state managment works like @redux/toolkit
 
 export let store: Store;
 
@@ -43,6 +46,7 @@ export const createStore = (init: Function) => {
   return { useSelector, useStore, dispatch: store.dispatch };
 };
 
+//create dispatch function and state
 export const configureStore = (state: any) =>
   createStore((set: SetFunction) => ({
     state,
@@ -60,6 +64,7 @@ export const configureStore = (state: any) =>
     },
   }));
 
+//Group contents his own state...
 export function createGroup<Type = any>(
   attributes: GropuAttributes<Type>
 ): Group<Type> {
@@ -74,13 +79,11 @@ export function createGroup<Type = any>(
   return { actions, state: attributes.initialState, name: attributes.name };
 }
 
-export interface CombindGroupsAttriburs {
-  reducers: Record<string, Group>;
-}
-
+// Combin all groups to make global state
 export function combindGroups(attributes: CombindGroupsAttriburs) {
   const { reducers } = attributes;
   const state: any = {};
+  // marge states
   Object.keys(reducers).forEach((key) => {
     const reducer = reducers[key];
     state[reducer.name] = reducer.state;

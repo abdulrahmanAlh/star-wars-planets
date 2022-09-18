@@ -8,8 +8,8 @@ export interface LayoutProps {
 
 export const Layout: FC<LayoutProps> = ({ children, className = "" }) => {
   return (
-    <div className="md:container md:mx-auto px-4">
-      <CustomText className="text-center text-3xl my-5	">Star War</CustomText>
+    <div className={`md:container md:mx-auto p-4 ${className}`}>
+      <CustomText className="text-center text-3xl mb-5">Star War</CustomText>
       {children}
     </div>
   );

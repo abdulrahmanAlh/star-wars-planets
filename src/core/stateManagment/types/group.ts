@@ -18,3 +18,7 @@ export interface Group<Type = any> {
   state: Type;
   name: string;
 }
+
+export interface CombindGroupsAttriburs {
+  reducers: Record<string, Group>;
+}

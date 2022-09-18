@@ -1,3 +1,4 @@
+// observer desgin pattern..
 export const createEmitter = () => {
   const subscriptions = new Map();
   return {

@@ -1,8 +1,8 @@
 import { FC, ReactElement } from "react";
 import { CustomAvatar, CustomCard, CustomText } from "../components";
-import { Planet } from "../core/groups/planet";
 import moment from "moment";
 import { nFormatter } from "../utils";
+import { Planet } from "../core/models";
 
 export interface PlanetCardProps {
   planet: Planet;
