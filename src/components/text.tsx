@@ -8,7 +8,7 @@ export interface CustomTextProps {
 
 export const CustomText: FC<CustomTextProps> = ({
   children,
-  variant = "primary",
+  variant = "normal",
   className = "",
 }) => {
   const fontColor = useMemo(() => {
@@ -16,7 +16,7 @@ export const CustomText: FC<CustomTextProps> = ({
       case "primary":
         return "text-yellow-400";
       case "gray":
-        return "text-gray-600";
+        return "text-gray-500";
       case "normal":
         return "text-white";
       case "secondary":

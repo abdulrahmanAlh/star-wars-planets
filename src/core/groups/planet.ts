@@ -56,18 +56,18 @@ export const FetchPlanets = async () => {
     const res = await axios.get("https://swapi.dev/api/planets");
     let planets: Planet[] = res.data.results;
     planets = planets.filter((planet) => planet.films.length > 0);
-    let operations: any = [];
-    for (let index = 0; index < planets.length; index++) {
-      const plant = planets[index];
-      plant.residents.forEach((person) => {
-        operations.push(axios.get(person));
-      });
-      await Promise.all(operations).then((values) => {
-        // TODO Set condtion here
-        console.log(values);
-      });
-      operations = [];
-    }
+    // let operations: any = [];
+    // for (let index = 0; index < planets.length; index++) {
+    //   const plant = planets[index];
+    //   plant.residents.forEach((person) => {
+    //     operations.push(axios.get(person));
+    //   });
+    //   await Promise.all(operations).then((values) => {
+    //     // TODO Set condtion here
+    //     console.log(values);
+    //   });
+    //   operations = [];
+    // }
 
     dispatch(setPlanets(planets));
   } catch (error) {
